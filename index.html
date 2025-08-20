@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>바이올린 튜너</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="tunerScreen" class="screen active">
+    <header>
+      <div style="display:flex; gap:8px;">
+        <button id="reconnectBtn" class="ghost" onclick="location.reload()">서버 재연결</button>
+        <!-- 새로 추가 -->
+        <button id="stopBtnHeader" class="ghost" onclick="app.stop()">STOP</button>
+
+        
+      </div>
+    </header>
+    <!-- 모드 선택 게이트 -->
+    <section id="modeGate" class="mode-gate">
+      <h2>모드를 선택하세요</h2>
+      <div class="gate-buttons">
+        <button onclick="app.chooseMode('auto')">AUTO</button>
+        <button class="ghost" onclick="app.chooseMode('manual')">MANUAL</button>
+      </div>
+      <p class="hint">Auto: 4현 자동 튜닝 시작 / Manual: 현을 직접 선택</p>
+    </section>
+
+    <!-- 제어 패널 -->
+    <section class="controls">
+      <div class="mode">
+        <button onclick="app.setAuto()">AUTO</button>
+        <button class="ghost" onclick="app.setManual()">MANUAL</button>
+        <span id="modeLabel" class="mode-label">현재 모드: -</span>
+      </div>
+      <div class="manual-strings">
+        <button onclick="app.startString('G3')">G3</button>
+        <button onclick="app.startString('D4')">D4</button>
+        <button onclick="app.startString('A4')">A4</button>
+        <button onclick="app.startString('E5')">E5</button>
+        <button class="ghost" onclick="app.stop()">STOP</button>
+      </div>
+    </section>
+
+    <section class="readout">
+      <div class="note" id="noteName">—</div>
+      <div class="freq" id="frequency">0.00 Hz</div>
+      <div class="string-target" id="stringTarget">목표 현: —</div>
+    </section>
+
+    <section class="meter-wrap">
+      <div class="ticks">
+        <span>-50</span><span>-25</span><span>0</span><span>+25</span><span>+50</span>
+      </div>
+      <div class="meter" id="meter">
+        <div class="needle" id="needle"></div>
+      </div>
+      <div class="cents" id="centsText">0 cent</div>
+    </section>
+
+    <!-- 스펙트럼: 빨간 줄(목표), 흰 줄(현재) -->
+    <section class="spectrum">
+      <canvas id="spectrum" width="900" height="180"></canvas>
+    </section>
+
+    <section class="strings">
+      <div class="string" data-note="G3">G3 <small>196.00 Hz</small></div>
+      <div class="string" data-note="D4">D4 <small>293.66 Hz</small></div>
+      <div class="string" data-note="A4">A4 <small>440.00 Hz</small></div>
+      <div class="string" data-note="E5">E5 <small>659.25 Hz</small></div>
+    </section>
+
+    <footer class="status" id="status">서버 연결 대기 중…</footer>
+  </div>
+
+  <!-- ✅ 토스트/모달 컨테이너 -->
+  <div id="toast" class="toast"></div>
+  <div id="modal" class="modal hidden">
+    <div class="modal-card">
+      <div id="modalText">끝났습니다</div>
+      <div class="modal-actions">
+        <button onclick="app.restart()">다시 선택</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
